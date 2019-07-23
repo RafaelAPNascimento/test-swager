@@ -1,0 +1,64 @@
+
+service: test-swagger
+app: test-swagger
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: java8
+  stage: dev
+  region: us-east-1
+
+plugins:
+  - serverless-aws-documentation
+
+package:
+  artifact: target/test-swagger-dev.jar
+
+custom:
+  documentation:
+    version: '1'
+    summary: 'Todo API'
+    description: 'A todo API documented with OpenAPI specification'
+    resources:
+      -
+        path: "save"
+        description: "Save a Book"
+
+    models:
+      -
+        name: "Book"
+        description: "This is as book"
+        contentType: "application/json"
+        schema: ${file(models/book.json)}
+
+      -
+        name: "ErrorResponse"
+        description: "This is an error"
+        contentType: "application/json"
+        schema: ${file(models/errorResponse4xx.json)}
+
+functions:
+  save:
+    handler: com.serverless.requests.SaveBook
+    events:
+      - http:
+          path: save
+          method: post
+          cors: true
+          documentation:
+            summary: "create a new book"
+            requestBody:
+              description: "body containing 'text' property for the Book"
+            requestModels:
+              "application/json": "Book"
+            methodResponses:
+              -
+                statusCode: "200"
+                responseBody:
+                  description: "an empty response"
+              -
+                statusCode: "400"
+                responseModels:
+                  "application/json": "ErrorResponse"

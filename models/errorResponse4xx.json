@@ -1,0 +1,18 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Error",
+  "description": "Esquema para mensagem de erro status 4xx",
+  "type": "object",
+  "properties" : {
+    "statusCode" : {
+      "type" : "string"
+    },
+    "message" : {
+      "type" : "string"
+    },
+    "date" : {
+      "type" : "string"
+    }
+  }
+}
